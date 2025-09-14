@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>24计算机1班 - 官网首页</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        secondary: '#E8F3FF',
+                        accent: '#0E42D2',
+                        lightBlue: '#B3D4FF',
+                        darkBg: '#F8FAFC',
+                        cardBg: '#FFFFFF',
+                        textColor: '#1E293B',
+                        lightText: '#64748B',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'PingFang SC', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'fade-in': 'fadeIn 1.5s ease forwards',
+                        'slide-up': 'slideUp 1s ease forwards',
+                        'bounce-slow': 'bounce 3s infinite',
+                        'scale-in': 'scaleIn 0.5s ease forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(50px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        scaleIn: {
+                            '0%': { transform: 'scale(0.95)', opacity: '0' },
+                            '100%': { transform: 'scale(1)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 0 2px 8px rgba(22, 93, 255, 0.3);
+            }
+            .card-hover {
+                transition: all 0.3s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-8px) scale(1.02);
+                box-shadow: 0 12px 24px rgba(22, 93, 255, 0.15);
+            }
+            .photo-wall-item {
+                transition: all 0.4s ease;
+                border: 3px solid theme('colors.cardBg');
+                box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+                display: none; /* 默认隐藏所有照片 */
+            }
+            .photo-wall-item.active {
+                display: block; /* 仅显示当前页照片 */
+                animation: scaleIn 0.5s ease forwards;
+            }
+            .photo-wall-item:hover {
+                transform: scale(1.1);
+                z-index: 20;
+                box-shadow: 0 8px 20px rgba(22, 93, 255, 0.2);
+            }
+            .watermark {
+                opacity: 0.08;
+                pointer-events: none;
+                transition: opacity 0.5s ease;
+            }
+            .watermark:hover {
+                opacity: 0.15;
+            }
+            .danmaku {
+                position: fixed;
+                white-space: nowrap;
+                z-index: 90;
+                animation: danmakuMove linear forwards;
+                text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+                backdrop-filter: blur(2px);
+                padding: 2px 8px;
+                border-radius: 12px;
+                background: rgba(255,255,255,0.8);
+                color: theme('colors.textColor');
+            }
+            @keyframes danmakuMove {
+                from {
+                    transform: translateX(100vw);
+                }
+                to {
+                    transform: translateX(-100%);
+                }
+            }
+            .logo-spin {
+                transition: transform 0.5s ease;
+            }
+            .logo-spin:hover {
+                transform: rotate(360deg);
+            }
+            .bg-grid {
+                background-image: 
+                    linear-gradient(rgba(22, 93, 255, 0.03) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(22, 93, 255, 0.03) 1px, transparent 1px);
+                background-size: 20px 20px;
+            }
+            .text-gradient {
+                background-clip: text;
+                -webkit-background-clip: text;
+                color: transparent;
+                background-image: linear-gradient(45deg, #165DFF, #0E42D2);
+            }
+            .pagination-btn {
+                transition: all 0.3s ease;
+                position: relative;
+                overflow: hidden;
+            }
+            .pagination-btn::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(22, 93, 255, 0.1);
+                transform: scaleX(0);
+                transform-origin: right;
+                transition: transform 0.3s ease;
+                border-radius: inherit;
+            }
+            .pagination-btn:hover::after {
+                transform: scaleX(1);
+                transform-origin: left;
+            }
+            .pagination-btn.active {
+                background-color: #165DFF;
+                color: white;
+                box-shadow: 0 4px 12px rgba(22, 93, 255, 0.3);
+            }
+            .photo-frame {
+                position: relative;
+                overflow: hidden;
+            }
+            .photo-frame::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 4px;
+                background: linear-gradient(90deg, #165DFF, #7B61FF, #165DFF);
+                background-size: 200% auto;
+                animation: shine 3s linear infinite;
+            }
+            @keyframes shine {
+                to {
+                    background-position: 200% center;
+                }
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-darkBg text-textColor min-h-screen overflow-x-hidden bg-grid">
+    <!-- 导航栏（固定顶部，最高层级） -->
+    <header
+        class="fixed top-0 left-0 right-0 z-500 py-4 px-4 md:px-8 bg-cardBg/95 backdrop-blur-md shadow-md border-b border-gray-100"
+        style="z-index: 99999;">
+        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
+            <!-- 班级LOGO -->
+            <div class="flex items-center mb-4 md:mb-0">
+                <div
+                    class="logo-spin w-14 h-14 bg-primary rounded-full flex items-center justify-center text-white text-2xl font-bold mr-4">
+                    <i class="fa fa-code"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-bold text-gradient">24计算机1班</h1>
+                    <p class="text-sm text-lightText">Code Together, Shine Bright</p>
+                </div>
+            </div>
+
+            <!-- 导航菜单 -->
+            <nav class="flex flex-wrap justify-center gap-4 md:gap-6">
+                <a href="#feature"
+                    class="text-textColor hover:text-primary transition-colors duration-300 font-medium flex items-center px-2 py-1">
+                    <i class="fa fa-star mr-2"></i>班级特色
+                </a>
+                <a href="#elements"
+                    class="text-textColor hover:text-primary transition-colors duration-300 font-medium flex items-center px-2 py-1">
+                    <i class="fa fa-th mr-2"></i>趣味元素
+                </a>
+                <a href="#photo-wall"
+                    class="text-textColor hover:text-primary transition-colors duration-300 font-medium flex items-center px-2 py-1">
+                    <i class="fa fa-picture-o mr-2"></i>照片墙
+                </a>
+                <a href="#motto"
+                    class="text-textColor hover:text-primary transition-colors duration-300 font-medium flex items-center px-2 py-1">
+                    <i class="fa fa-quote-left mr-2"></i>班级宣言
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 背景音乐 -->
+    <audio id="backgroundMusic" loop preload="auto">
+        <source src="./jsj1zy/222.mp3" type="audio/mpeg">
+        您的浏览器不支持音频播放
+    </audio>
+    <button id="musicControl"
+        class="fixed bottom-6 right-6 bg-primary text-white p-3 rounded-full shadow-lg z-50 hover:bg-accent transition-all duration-300 transform hover:scale(1.1) active:scale(0.95)">
+        <i class="fa fa-music text-xl"></i>
+    </button>
+
+    <!-- 水印 -->
+    <div class="watermark fixed top-20 left-10 text-[120px] font-bold text-primary rotate-[-15deg] z-0">
+        24计算机1班
+    </div>
+
+    <!-- 背景图 -->
+    <div class="fixed inset-0 z-[-1] opacity-12 animate-fade-in">
+        <img src="https://vcg05.cfp.cn/creative/vcg/nowater800/new/VCG211579706670.jpg?x-oss-process=image/format,webp"
+            alt="班级背景图" class="w-full h-full object-cover">
+    </div>
+
+    <!-- 主内容区 -->
+    <main class="container mx-auto px-4 md:px-8 pt-28 pb-16 relative z-10">
+        <!-- 班级宣言区域 -->
+        <section id="motto" class="py-16 px-4 md:px-8 mb-16 animate-slide-up" style="animation-delay: 0.2s">
+            <div
+                class="container mx-auto bg-secondary/70 backdrop-blur-sm rounded-3xl p-8 md:p-12 shadow-lg border border-lightBlue/30">
+                <div class="max-w-3xl mx-auto text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold text-primary mb-6">班级宣言</h2>
+                    <div class="relative">
+                        <i class="fa fa-quote-left text-4xl text-primary/30 absolute -top-6 -left-4"></i>
+                        <p class="text-xl md:text-2xl font-medium leading-relaxed mb-8 text-textColor">
+                            以代码编织梦想，用协作创造未来。<br>
+                            我们不只是学习者，更是数字时代的创造者！
+                        </p>
+                        <i class="fa fa-quote-right text-4xl text-primary/30 absolute -bottom-6 -right-4"></i>
+                    </div>
+                    <div class="flex justify-center">
+                        <div class="h-1 w-24 bg-primary rounded-full animate-pulse-slow"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 特色内容 -->
+        <section id="feature" class="mb-20 animate-slide-up" style="animation-delay: 0.4s">
+            <div class="bg-cardBg rounded-3xl p-6 md:p-10 shadow-md border border-gray-100">
+                <h2 class="text-3xl md:text-4xl font-bold mb-8 text-primary text-center">班级特色</h2>
+                <div class="flex flex-col md:flex-row items-center justify-center gap-8">
+                    <!-- 脆皮鸡饭*2 -->
+                    <div class="text-center bg-secondary/50 p-6 rounded-2xl shadow-sm card-hover w-full md:w-1/3 group">
+                        <div
+                            class="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-primary/20 transition-colors">
+                            <img src="https://picsum.photos/id/292/200/200" alt="脆皮鸡饭"
+                                class="w-16 h-16 object-cover rounded-full animate-float">
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2 text-textColor">脆皮鸡饭 × 2</h3>
+                        <p class="text-lightText">班级能量补给站，代码灵感来源</p>
+                    </div>
+
+                    <!-- 不知道ok -->
+                    <div class="text-center bg-secondary/50 p-6 rounded-2xl shadow-sm card-hover w-full md:w-1/3 group">
+                        <div
+                            class="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-primary/20 transition-colors">
+                            <i class="fa fa-question-circle text-4xl text-primary animate-bounce-slow"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2 text-textColor">不知道ok</h3>
+                        <p class="text-lightText">保持好奇，勇于提问，共同进步</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 卡片展示区 (趣味元素) -->
+        <section id="elements" class="mb-20 animate-slide-up" style="animation-delay: 0.6s">
+            <h2 class="text-3xl md:text-4xl font-bold mb-10 text-primary text-center">趣味元素</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- 罗非鱼 -->
+                <div class="bg-cardBg rounded-2xl overflow-hidden shadow-md card-hover border border-gray-100">
+                    <div class="h-52 bg-secondary/30 flex items-center justify-center">
+                        <img src="https://vcg02.cfp.cn/creative/vcg/nowater800/new/VCG211431669570.jpg?x-oss-process=image/format,webp"
+                            alt="一条罗非鱼" class="max-h-full max-w-full object-contain p-4 animate-float">
+                    </div>
+                    <div class="p-5 text-center">
+                        <h3 class="font-bold text-xl mb-1 text-textColor">罗非鱼</h3>
+                        <div class="flex justify-center space-x-2 text-primary">
+                            <i class="fa fa-tint"></i>
+                            <i class="fa fa-tint"></i>
+                            <i class="fa fa-tint"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 三百斤的猪 -->
+                <div class="bg-cardBg rounded-2xl overflow-hidden shadow-md card-hover border border-gray-100">
+                    <div class="h-52 bg-secondary/30 flex items-center justify-center">
+                        <img src="	https://vcg05.cfp.cn/creative/vcg/nowater800/new/VCG211406752585.jpg?x-oss-process=image/format,webp"
+                            alt="一只三百斤的猪" class="max-h-full max-w-full object-contain p-4 animate-float"
+                            style="animation-delay: 0.5s">
+                    </div>
+                    <div class="p-5 text-center">
+                        <h3 class="font-bold text-xl mb-1 text-textColor">三百斤的猪</h3>
+                        <div class="flex justify-center space-x-2 text-primary">
+                            <i class="fa fa-cutlery"></i>
+                            <i class="fa fa-cutlery"></i>
+                            <i class="fa fa-cutlery"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 熊二 -->
+                <div class="bg-cardBg rounded-2xl overflow-hidden shadow-md card-hover border border-gray-100">
+                    <div class="h-52 bg-secondary/30 flex items-center justify-center">
+                        <img src="https://n.sinaimg.cn/sinakd20115/710/w1155h1155/20220910/c7cc-293d4dccc7bf67b7ce83e51841b5201d.jpg"
+                            alt="熊二" class="max-h-full max-w-full object-contain p-4 animate-float"
+                            style="animation-delay: 1s">
+                    </div>
+                    <div class="p-5 text-center">
+                        <h3 class="font-bold text-xl mb-1 text-textColor">熊二</h3>
+                        <div class="flex justify-center space-x-2 text-primary">
+                            <i class="fa fa-tree"></i>
+                            <i class="fa fa-tree"></i>
+                            <i class="fa fa-tree"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 两条烤罗非鱼 -->
+                <div class="bg-cardBg rounded-2xl overflow-hidden shadow-md card-hover border border-gray-100">
+                    <div class="h-52 bg-secondary/30 flex items-center justify-center">
+                        <img src="	https://vcg05.cfp.cn/creative/vcg/nowater800/new/VCG211392226286.jpg?x-oss-process=image/format,webp"
+                            alt="烤罗非鱼" class="max-h-full max-w-full object-contain p-4 animate-float"
+                            style="animation-delay: 1.5s">
+                    </div>
+                    <div class="p-5 text-center">
+                        <h3 class="font-bold text-xl mb-1 text-textColor">两条烤罗非鱼</h3>
+                        <div class="flex justify-center space-x-2 text-primary">
+                            <i class="fa fa-fire"></i>
+                            <i class="fa fa-fire"></i>
+                            <i class="fa fa-fire"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 猪猪侠 -->
+                <div class="bg-cardBg rounded-2xl overflow-hidden shadow-md card-hover border border-gray-100">
+                    <div class="h-52 bg-secondary/30 flex items-center justify-center">
+                        <img src="https://c-ssl.dtstatic.com/uploads/item/202006/09/20200609091105_ghdvn.thumb.1000_0.jpeg"
+                            alt="猪猪侠照片" class="max-h-full max-w-full object-contain p-4 animate-float"
+                            style="animation-delay: 0.2s">
+                    </div>
+                    <div class="p-5 text-center">
+                        <h3 class="font-bold text-xl mb-1 text-textColor">猪猪侠</h3>
+                        <div class="flex justify-center space-x-2 text-primary">
+                            <i class="fa fa-shield"></i>
+                            <i class="fa fa-shield"></i>
+                            <i class="fa fa-shield"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 小猪佩奇 -->
+                <div class="bg-cardBg rounded-2xl overflow-hidden shadow-md card-hover border border-gray-100">
+                    <div class="h-52 bg-secondary/30 flex items-center justify-center">
+                        <img src="https://ts1.tc.mm.bing.net/th/id/R-C.192ecac0856422bea0c51a60e8444ffd?rik=LjiBJ8X64od6Og&riu=http%3a%2f%2fn.sinaimg.cn%2ftranslate%2f448%2fw1024h1024%2f20190423%2f6QF2-hvvuiyn7344179.jpg&ehk=DPQRyfTD%2b3bw4uO%2bA8KiJjcU5uaK8yggt3X6Xj1vpVA%3d&risl=&pid=ImgRaw&r=0"
+                            alt="小猪佩奇" class="max-h-full max-w-full object-contain p-4 animate-float"
+                            style="animation-delay: 0.7s">
+                    </div>
+                    <div class="p-5 text-center">
+                        <h3 class="font-bold text-xl mb-1 text-textColor">小猪佩奇</h3>
+                        <div class="flex justify-center space-x-2 text-primary">
+                            <i class="fa fa-heart"></i>
+                            <i class="fa fa-heart"></i>
+                            <i class="fa fa-heart"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 海洋 -->
+                <div class="bg-cardBg rounded-2xl overflow-hidden shadow-md card-hover border border-gray-100">
+                    <div class="h-52 bg-secondary/30 flex items-center justify-center">
+                        <img src="https://vcg02.cfp.cn/creative/vcg/nowater800/new/VCG41N87384937.jpg?x-oss-process=image/format,webp"
+                            alt="海洋" class="max-h-full max-w-full object-contain p-4 animate-float"
+                            style="animation-delay: 1.2s">
+                    </div>
+                    <div class="p-5 text-center">
+                        <h3 class="font-bold text-xl mb-1 text-textColor">海洋</h3>
+                        <div class="flex justify-center space-x-2 text-primary">
+                            <i class="fa fa-water"></i>
+                            <i class="fa fa-water"></i>
+                            <i class="fa fa-water"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 奶龙 -->
+                <div class="bg-cardBg rounded-2xl overflow-hidden shadow-md card-hover border border-gray-100">
+                    <div class="h-52 bg-secondary/30 flex items-center justify-center">
+                        <img src="https://ts2.tc.mm.bing.net/th/id/OIP-C.pwFTjQvvH-Hhh4e4QKIAXwHaHS?rs=1&pid=ImgDetMain&o=7&rm=3"
+                            alt="奶龙" class="max-h-full max-w-full object-contain p-4 animate-float"
+                            style="animation-delay: 1.7s">
+                    </div>
+                    <div class="p-5 text-center">
+                        <h3 class="font-bold text-xl mb-1 text-textColor">奶龙</h3>
+                        <div class="flex justify-center space-x-2 text-primary">
+                            <i class="fa fa-dragon"></i>
+                            <i class="fa fa-dragon"></i>
+                            <i class="fa fa-dragon"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 彩色蝴蝶 -->
+                <div class="bg-cardBg rounded-2xl overflow-hidden shadow-md card-hover border border-gray-100">
+                    <div class="h-52 bg-secondary/30 flex items-center justify-center">
+                        <img src="https://vcg02.cfp.cn/creative/vcg/nowater800/new/VCG211418183603.jpg?x-oss-process=image/format,webp"
+                            alt="彩色蝴蝶" class="max-h-full max-w-full object-contain p-4 animate-float"
+                            style="animation-delay: 0.4s">
+                    </div>
+                    <div class="p-5 text-center">
+                        <h3 class="font-bold text-xl mb-1 text-textColor">彩色蝴蝶</h3>
+                        <div class="flex justify-center space-x-2 text-primary">
+                            <i class="fa fa-leaf"></i>
+                            <i class="fa fa-leaf"></i>
+                            <i class="fa fa-leaf"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 照片墙 -->
+        <section id="photo-wall" class="mb-16 animate-slide-up" style="animation-delay: 0.8s">
+            <div class="relative">
+                <!-- 装饰元素 -->
+                <div class="absolute -top-10 -left-10 w-20 h-20 bg-primary/10 rounded-full blur-xl"></div>
+                <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-primary/10 rounded-full blur-xl"></div>
+
+                <h2 class="text-3xl md:text-4xl font-bold mb-10 text-primary text-center relative z-10">班级照片墙</h2>
+
+                <!-- 照片墙单独容器 -->
+                <div
+                    class="photo-frame bg-cardBg rounded-3xl p-6 md:p-8 shadow-lg border border-gray-100 relative z-10">
+                    <!-- 照片容器 -->
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4"
+                        id="photoWallContainer">
+                        <!-- 照片将通过JS动态添加 -->
+                    </div>
+
+                    <!-- 分页控件 -->
+                    <div class="flex justify-center items-center mt-10 gap-4" id="paginationControls">
+                        <span class="text-lightText mr-2">页码：</span>
+                        <!-- 分页按钮将通过JS动态添加 -->
+                        <span class="text-lightText ml-2" id="totalPages">共 0 页</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-primary/80 text-white py-12 px-4 relative z-10 animate-fade-in" style="animation-delay: 1s">
+        <div class="container mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <!-- 左侧LOGO和信息 -->
+                <div class="mb-8 md:mb-0 text-center md:text-left">
+                    <div class="flex items-center justify-center md:justify-start">
+                        <div
+                            class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-primary text-xl font-bold mr-3">
+                            <i class="fa fa-code"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold">24计算机1班</h3>
+                    </div>
+                    <p class="mt-2 opacity-80 max-w-md mx-auto md:mx-0">
+                        我们用代码书写青春，用团结铸就辉煌，24计算机1班，永远在路上！
+                    </p>
+                </div>
+
+                <!-- 中间联系方式 -->
+                <div class="mb-8 md:mb-0 text-center">
+                    <h4 class="text-xl font-semibold mb-4">联系我们</h4>
+                    <div class="flex flex-col space-y-2">
+                        <a href="#"
+                            class="flex items-center justify-center md:justify-start opacity-80 hover:opacity-100 transition-opacity">
+                            <i class="fa fa-weixin text-xl mr-2"></i> 班级微信群
+                        </a>
+                        <a href="#"
+                            class="flex items-center justify-center md:justify-start opacity-80 hover:opacity-100 transition-opacity">
+                            <i class="fa fa-qq text-xl mr-2"></i> 班级QQ群
+                        </a>
+                        <a href="#"
+                            class="flex items-center justify-center md:justify-start opacity-80 hover:opacity-100 transition-opacity">
+                            <i class="fa fa-envelope text-xl mr-2"></i> class1@example.com
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 右侧版权信息 -->
+                <div class="text-center md:text-right">
+                    <p class="text-lg font-medium">© 2024 计算机1班</p>
+                    <p class="mt-2 text-sm opacity-70">设计与开发：班级技术小组</p>
+                    <div class="flex justify-center md:justify-end space-x-4 mt-4">
+                        <a href="#"
+                            class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition-colors">
+                            <i class="fa fa-github"></i>
+                        </a>
+                        <a href="#"
+                            class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition-colors">
+                            <i class="fa fa-bilibili"></i>
+                        </a>
+                        <a href="#"
+                            class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition-colors">
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 回到顶部按钮 -->
+    <button id="backToTop"
+        class="fixed bottom-6 left-6 bg-primary text-white p-3 rounded-full shadow-lg z-50 hover:bg-accent transition-all duration-300 transform hover:scale(1.1) active:scale(0.95 opacity-0 invisible">
+        <i class="fa fa-arrow-up text-xl"></i>
+    </button>
+
+    <script>
+        // 照片数据源 - 可以通过修改这个数组来添加/删除照片
+        const photoSources = [
+            // 第1页照片
+            { url: 'https://picsum.photos/id/1012/400/400', alt: '班级活动照片1' },
+            { url: 'https://picsum.photos/id/1011/400/400', alt: '班级活动照片2' },
+            { url: 'https://picsum.photos/id/1010/400/400', alt: '班级活动照片3' },
+            { url: 'https://picsum.photos/id/1009/400/400', alt: '班级活动照片4' },
+            { url: 'https://picsum.photos/id/1008/400/400', alt: '班级活动照片5' },
+            { url: 'https://picsum.photos/id/1006/400/400', alt: '班级活动照片6' },
+
+            // 第2页照片
+            { url: 'https://picsum.photos/id/1005/400/400', alt: '班级活动照片7' },
+            { url: 'https://picsum.photos/id/1003/400/400', alt: '班级活动照片8' },
+            { url: 'https://picsum.photos/id/1002/400/400', alt: '班级活动照片9' },
+            { url: 'https://picsum.photos/id/1001/400/400', alt: '班级活动照片10' },
+            { url: 'https://picsum.photos/id/1000/400/400', alt: '班级活动照片11' },
+            { url: 'https://picsum.photos/id/999/400/400', alt: '班级活动照片12' },
+
+            // 第3页照片（新增）
+            { url: 'https://picsum.photos/id/998/400/400', alt: '班级活动照片13' },
+            { url: 'https://picsum.photos/id/997/400/400', alt: '班级活动照片14' },
+            { url: 'https://picsum.photos/id/996/400/400', alt: '班级活动照片15' },
+            { url: 'https://picsum.photos/id/995/400/400', alt: '班级活动照片16' },
+            { url: 'https://picsum.photos/id/994/400/400', alt: '班级活动照片17' },
+            { url: 'https://picsum.photos/id/993/400/400', alt: '班级活动照片18' }
+        ];
+
+        // 每页显示的照片数量
+        const photosPerPage = 6;
+
+        // 1. 动态生成照片墙
+        function generatePhotoWall() {
+            const container = document.getElementById('photoWallContainer');
+            const paginationContainer = document.getElementById('paginationControls');
+            const totalPagesElement = document.getElementById('totalPages');
+
+            // 清空容器
+            container.innerHTML = '';
+
+            // 计算总页数
+            const totalPages = Math.ceil(photoSources.length / photosPerPage);
+            totalPagesElement.textContent = `共 ${totalPages} 页`;
+
+            // 生成照片
+            photoSources.forEach((photo, index) => {
+                // 计算照片所属页码
+                const pageNum = Math.floor(index / photosPerPage) + 1;
+
+                // 创建照片元素
+                const photoElement = document.createElement('div');
+                photoElement.className = `aspect-square bg-secondary rounded-lg overflow-hidden photo-wall-item ${pageNum === 1 ? 'active' : ''}`;
+                photoElement.dataset.page = pageNum;
+
+                // 创建图片元素
+                const imgElement = document.createElement('img');
+                imgElement.src = photo.url;
+                imgElement.alt = photo.alt;
+                imgElement.className = 'w-full h-full object-cover';
+
+                photoElement.appendChild(imgElement);
+                container.appendChild(photoElement);
+            });
+
+            // 生成分页按钮
+            // 先清除已有的分页按钮（保留前后文本）
+            const paginationBtns = paginationContainer.querySelectorAll('.pagination-btn');
+            paginationBtns.forEach(btn => btn.remove());
+
+            // 添加新的分页按钮
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement('button');
+                btn.className = `pagination-btn ${i === 1 ? 'active' : ''} px-5 py-2 rounded-full border border-primary text-primary hover:bg-primary/10`;
+                btn.textContent = i;
+                btn.onclick = () => changePhotoPage(i);
+
+                // 插入到"共 X 页"文本前
+                totalPagesElement.parentNode.insertBefore(btn, totalPagesElement);
+            }
+        }
+
+        // 2. 照片墙翻页功能
+        function changePhotoPage(pageNum) {
+            // 隐藏所有照片（添加淡出效果）
+            const allPhotos = document.querySelectorAll('.photo-wall-item');
+            allPhotos.forEach(photo => {
+                photo.style.opacity = '0';
+                setTimeout(() => {
+                    photo.classList.remove('active');
+                }, 200);
+            });
+
+            // 显示当前页照片（添加淡入效果）
+            setTimeout(() => {
+                const currentPagePhotos = document.querySelectorAll(`.photo-wall-item[data-page="${pageNum}"]`);
+                currentPagePhotos.forEach((photo, index) => {
+                    photo.classList.add('active');
+                    // 错开时间显示，增加动画感
+                    setTimeout(() => {
+                        photo.style.opacity = '1';
+                    }, index * 50);
+                });
+
+                // 更新分页按钮状态
+                const paginationBtns = document.querySelectorAll('.pagination-btn');
+                paginationBtns.forEach(btn => {
+                    btn.classList.remove('active');
+                    if (parseInt(btn.textContent) === pageNum) {
+                        btn.classList.add('active');
+                    }
+                });
+            }, 200);
+        }
+
+        // 3. 弹幕功能
+        function createDanmaku(text) {
+            const danmaku = document.createElement('div');
+            danmaku.className = 'danmaku';
+            danmaku.textContent = text;
+
+            const size = Math.floor(Math.random() * 18) + 14;
+            const hue = Math.floor(Math.random() * 60) + 200;
+            const color = `hsl(${hue}, 80%, 45%)`;
+            const top = Math.floor(Math.random() * 60) + 20;
+            const duration = Math.floor(Math.random() * 15) + 10;
+            const opacity = Math.random() * 0.3 + 0.7;
+
+            danmaku.style.fontSize = `${size}px`;
+            danmaku.style.color = color;
+            danmaku.style.top = `${top}%`;
+            danmaku.style.animationDuration = `${duration}s`;
+            danmaku.style.opacity = opacity;
+            danmaku.style.fontWeight = Math.random() > 0.5 ? 'bold' : 'normal';
+            danmaku.style.animation = `fadeIn 0.5s ease forwards, danmakuMove ${duration}s linear ${0.5}s forwards`;
+
+            document.body.appendChild(danmaku);
+
+            setTimeout(() => {
+                danmaku.style.animation = 'fadeIn 0.5s reverse forwards';
+                setTimeout(() => danmaku.remove(), 500);
+            }, (duration + 0.5) * 1000);
+        }
+
+        function startDanmakus() {
+            const texts = ['李韵兰', '我不知道啊', '24计科1班', '代码ing', '一起加油', '脆皮鸡饭真香'];
+            texts.forEach((text, index) => {
+                setTimeout(() => createDanmaku(text), index * 1000);
+            });
+            setInterval(() => {
+                const randomText = texts[Math.floor(Math.random() * texts.length)];
+                createDanmaku(randomText);
+            }, 3000);
+        }
+
+        // 4. 背景音乐控制
+        const music = document.getElementById('backgroundMusic');
+        const musicControl = document.getElementById('musicControl');
+        const musicIcon = musicControl.querySelector('i');
+        music.volume = 0.3;
+
+        musicControl.addEventListener('click', () => {
+            if (music.paused) {
+                music.play().catch(e => {
+                    console.log('播放失败:', e);
+                    showToast('请点击页面任意位置以允许播放背景音乐');
+                });
+                musicIcon.className = 'fa fa-pause text-xl';
+                musicControl.classList.add('bg-accent');
+            } else {
+                music.pause();
+                musicIcon.className = 'fa fa-music text-xl';
+                musicControl.classList.remove('bg-accent');
+            }
+        });
+
+        // 5. 回到顶部功能
+        const backToTopBtn = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.remove('opacity-0', 'invisible');
+                backToTopBtn.classList.add('opacity-100', 'visible');
+            } else {
+                backToTopBtn.classList.add('opacity-0', 'invisible');
+                backToTopBtn.classList.remove('opacity-100', 'visible');
+            }
+        });
+
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // 6. 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const headerHeight = document.querySelector('header').offsetHeight;
+                    const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+                    window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+                }
+            });
+        });
+
+        // 7. 提示框功能
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed top-20 left-1/2 transform -translate-x-1/2 bg-black/80 text-white px-6 py-3 rounded-full z-50 animate-fade-in';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.animation = 'fadeIn 0.5s reverse forwards';
+                setTimeout(() => toast.remove(), 500);
+            }, 3000);
+        }
+
+        // 页面加载完成初始化
+        window.addEventListener('load', () => {
+            // 生成照片墙
+            generatePhotoWall();
+            // 启动弹幕
+            startDanmakus();
+            // 点击页面任意位置尝试播放音乐
+            document.body.addEventListener('click', () => {
+                if (music.paused) music.play().catch(e => console.log('播放失败:', e));
+            }, { once: true });
+            setTimeout(() => showToast('24计算机1班官网加载完成！'), 1000);
+        });
+
+        // 添加新照片的函数（可以通过调用这个函数动态添加照片）
+        function addNewPhoto(url, alt) {
+            photoSources.push({ url, alt });
+            generatePhotoWall(); // 重新生成照片墙
+            showToast('成功添加新照片！');
+        }
+    </script>
+</body>
+
+</html>
